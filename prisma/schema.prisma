@@ -1,0 +1,50 @@
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id             String   @id @default(cuid())
+  name           String
+  createdAt      DateTime @default(now())
+
+  profile        Profile?
+
+  swipesSent     Swipe[]  @relation("SwipeActor")
+  swipesReceived Swipe[]  @relation("SwipeTarget")
+}
+
+model Profile {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  age       Int
+  photo     String
+  bio       String
+  city      String
+  college   String?
+  interests Json
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Swipe {
+  id        String   @id @default(cuid())
+  actorId   String
+  targetId  String
+  action    String
+  createdAt DateTime @default(now())
+
+  actor  User @relation("SwipeActor", fields: [actorId], references: [id], onDelete: Cascade)
+  target User @relation("SwipeTarget", fields: [targetId], references: [id], onDelete: Cascade)
+
+  @@unique([actorId, targetId])
+  @@index([targetId, action])
+}
