@@ -1,69 +1,108 @@
-import Image from "next/image";
+
+"use client";
+
+import Discover from "./components/Discover";
+import { useState } from "react";
+import BottomNavigation from "./components/BottomNavigation";
+import Matches from "./components/Matches";
+
+type Tab = "home" | "discover" | "matches";
 
 export default function Home() {
+  const [activeTab, setActiveTab] = useState<Tab>("home");
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
+    <main className="min-h-screen bg-white pb-24">
+      <div className="mx-auto min-h-screen w-full max-w-[440px] px-4">
+
+        {/* Header */}
+        <header className="flex h-20 items-center justify-between">
+          <h1 className="text-3xl font-black tracking-tight text-[#211b29]">
+            coy<span className="text-[#ff347b]">.</span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+
+          <button
+            aria-label="Settings"
+            className="flex h-11 w-11 items-center justify-center rounded-full bg-[#f6f3fa] text-2xl"
           >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+            ⚙
+          </button>
+        </header>
+
+        {/* Home Tab */}
+        {activeTab === "home" && (
+          <section className="space-y-4 pt-1">
+
+            <div className="rounded-[26px] border-2 border-[#211b29] bg-[#e8e0ff] p-5 shadow-[4px_5px_0_#211b29]">
+              <div className="mb-3 text-3xl">🤫</div>
+
+              <h2 className="text-[27px] font-extrabold leading-tight tracking-tight">
+                No one has added you yet
+              </h2>
+
+              <p className="mt-2 text-[15px] text-[#625d6b]">
+                Invite friends so your crush can join too.
+              </p>
+
+              <button className="mt-5 rounded-full border-2 border-[#211b29] bg-white px-5 py-2.5 text-sm font-bold shadow-[3px_3px_0_#211b29]">
+                Invite friends
+              </button>
+            </div>
+
+            {/* Email card */}
+            <div className="flex items-center gap-3 rounded-[20px] border-2 border-[#eeeaf4] p-4">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#e0efff]">
+                📧
+              </div>
+
+              <div className="flex-1">
+                <h3 className="font-bold">Add your email</h3>
+                <p className="text-sm leading-snug text-[#777181]">
+                  So people who only have your email can find you.
+                </p>
+              </div>
+
+              <button className="font-bold text-[#ff347b]">
+                Add
+              </button>
+            </div>
+
+            {/* Crushes */}
+            <section className="pt-3">
+              <div className="mb-3 flex items-center justify-between">
+                <h2 className="text-lg font-extrabold">Your crushes</h2>
+                <span className="rounded-full bg-[#f6f3fa] px-3 py-1 text-sm font-bold text-[#777181]">
+                  0/3
+                </span>
+              </div>
+
+              <button className="flex w-full items-center gap-4 rounded-[20px] border-2 border-dashed border-[#d7cde5] p-3.5 text-left font-bold">
+                <span className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-[#211b29] bg-[#ff347b] text-2xl text-white shadow-[2px_2px_0_#211b29]">
+                  +
+                </span>
+                Add a crush
+              </button>
+
+              <p className="mt-4 text-sm leading-relaxed text-[#777181]">
+                They get an anonymous heads-up right away. Never who.
+              </p>
+            </section>
+
+          </section>
+        )}
+
+        {/* Discover Tab */}
+        {activeTab === "discover" && <Discover />}
+
+        {/* Matches Tab */}
+        {activeTab === "matches" && <Matches />}
+
+      </div>
+
+      <BottomNavigation
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+      />
+    </main>
   );
 }
