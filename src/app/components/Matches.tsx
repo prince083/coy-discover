@@ -4,7 +4,7 @@
 import { useEffect, useState } from "react";
 
 interface Match {
-    id: string;
+    userId: string;
     name: string;
     age: number;
     photo: string;
@@ -87,7 +87,7 @@ export default function Matches() {
                 <div className="grid grid-cols-2 gap-4">
                     {matches.map((match) => (
                         <article
-                            key={match.id}
+                            key={match.userId}
                             className="overflow-hidden rounded-[20px] border-2 border-[#211b29] bg-white shadow-[3px_4px_0_#211b29]"
                         >
                             <img

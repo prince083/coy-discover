@@ -37,6 +37,7 @@ export default function Discover() {
 
     const dragStartX = useRef(0);
     const isDragging = useRef(false);
+    const isSwipingRef = useRef(false);
 
     // Fetch profiles from the backend
     useEffect(() => {
@@ -73,8 +74,9 @@ export default function Discover() {
     async function handleSwipe(action: "LIKE" | "PASS") {
         const currentProfile = profiles[0];
 
-        if (!currentProfile || isSwiping) return;
+        if (!currentProfile || isSwipingRef.current) return;
 
+        isSwipingRef.current = true;
         setIsSwiping(true);
         setError("");
 
@@ -116,6 +118,7 @@ export default function Discover() {
                     : "Something went wrong. Please try again."
             );
         } finally {
+            isSwipingRef.current = false;
             setIsSwiping(false);
         }
     }
@@ -125,7 +128,7 @@ export default function Discover() {
     function handleDragStart(
         event: React.PointerEvent<HTMLElement>
     ) {
-        if (isSwiping) return;
+        if (isSwipingRef.current) return;
 
         isDragging.current = true;
         dragStartX.current = event.clientX;
@@ -162,6 +165,10 @@ export default function Discover() {
             // Not enough movement: return card to its original position
             setDragX(0);
         }
+    }
+    function handleDragCancel() {
+        isDragging.current = false;
+        setDragX(0);
     }
 
 
@@ -220,7 +227,7 @@ export default function Discover() {
                 onPointerDown={handleDragStart}
                 onPointerMove={handleDragMove}
                 onPointerUp={handleDragEnd}
-                onPointerCancel={handleDragEnd}
+                onPointerCancel={handleDragCancel}
                 style={{
                     transform: `translateX(${dragX}px) rotate(${dragX * 0.04}deg)`,
                     touchAction: "pan-y",
