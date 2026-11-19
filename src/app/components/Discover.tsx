@@ -34,6 +34,7 @@ export default function Discover() {
     const [matchName, setMatchName] = useState("");
 
     const [dragX, setDragX] = useState(0);
+    const [isDraggingUI, setIsDraggingUI] = useState(false);
 
     const dragStartX = useRef(0);
     const isDragging = useRef(false);
@@ -131,6 +132,8 @@ export default function Discover() {
         if (isSwipingRef.current) return;
 
         isDragging.current = true;
+        setIsDraggingUI(true);
+
         dragStartX.current = event.clientX;
 
         event.currentTarget.setPointerCapture(event.pointerId);
@@ -152,6 +155,7 @@ export default function Discover() {
         if (!isDragging.current) return;
 
         isDragging.current = false;
+        setIsDraggingUI(false);
 
         const SWIPE_THRESHOLD = 120;
 
@@ -162,12 +166,15 @@ export default function Discover() {
             setDragX(0);
             handleSwipe("PASS");
         } else {
-            // Not enough movement: return card to its original position
+            // Return the card to its original position
             setDragX(0);
         }
     }
+
+    // Handle cancelled pointer interaction
     function handleDragCancel() {
         isDragging.current = false;
+        setIsDraggingUI(false);
         setDragX(0);
     }
 
@@ -202,7 +209,7 @@ export default function Discover() {
             <section className="mt-8 rounded-[24px] border-2 border-[#211b29] bg-[#e8e0ff] p-6 text-center shadow-[4px_5px_0_#211b29]">
                 <div className="text-4xl">💗</div>
                 <h2 className="mt-3 text-xl font-extrabold">
-                    You're all caught up!
+                    You&apos;re all caught up!
                 </h2>
                 <p className="mt-2 text-sm text-[#625d6b]">
                     There are no more profiles to discover right now.
@@ -231,7 +238,7 @@ export default function Discover() {
                 style={{
                     transform: `translateX(${dragX}px) rotate(${dragX * 0.04}deg)`,
                     touchAction: "pan-y",
-                    transition: isDragging.current
+                    transition: isDraggingUI
                         ? "none"
                         : "transform 0.3s ease",
                 }}
@@ -328,7 +335,7 @@ export default function Discover() {
                         <div className="text-6xl">💗</div>
 
                         <h2 className="mt-4 text-3xl font-extrabold">
-                            It's a match!
+                            It&apos;s a match!
                         </h2>
 
                         <p className="mt-3 text-[#625d6b]">

@@ -80,7 +80,7 @@ export default function Matches() {
                     </h3>
                     <p className="mt-2 text-sm text-[#625d6b]">
                         Keep discovering. When someone you like likes you back,
-                        you'll find them here.
+                        you&apos;ll find them here.
                     </p>
                 </div>
             ) : (

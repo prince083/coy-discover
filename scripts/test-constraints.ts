@@ -38,8 +38,13 @@ async function main() {
         throw new Error(
             "FAILED: Duplicate swipe was unexpectedly accepted."
         );
-    } catch (error: any) {
-        if (error.code === "P2002") {
+    } catch (error: unknown) {
+        if (
+            typeof error === "object" &&
+            error !== null &&
+            "code" in error &&
+            error.code === "P2002"
+        ) {
             console.log("PASS: Duplicate swipe rejected.");
         } else {
             throw error;
